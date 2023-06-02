@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 8941610028d3b42c7b7a6135f798b35d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Pinzelan
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 7519ea6acddaf40b781198091c99f065, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
