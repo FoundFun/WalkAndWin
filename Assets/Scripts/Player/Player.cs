@@ -22,6 +22,7 @@ namespace Players
         private SpawnerPlatform _spawnerPlatform;
         private Platform _currentPlatform;
         private Animator _animator;
+        private AudioSource _jumpAudio;
         private Coroutine _coroutine;
         private TMP_Text _nameText;
         private Vector3 _startPosition;
@@ -39,7 +40,15 @@ namespace Players
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+            _jumpAudio = GetComponent<AudioSource>();
             _nameText = GetComponentInChildren<TMP_Text>();
+
+            _jumpAudio.volume = 1;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            _jumpAudio.Play();
         }
 
         public void Reset()
@@ -78,15 +87,15 @@ namespace Players
 
             _counterThrows++;
 
-            if (numberStep > 0)
-            {
-                count = numberStep;
-                polarity++;
-            }
-            else
+            if (numberStep < 0 && _currentIndexPlatform != _spawnerPlatform.MaxIndexPlatforms)
             {
                 index = numberStep;
                 polarity--;
+            }
+            else
+            {
+                count = numberStep;
+                polarity++;
             }
 
             for (int i = index; i != count; i++)
@@ -99,15 +108,6 @@ namespace Players
 
                     СhangeCounterPlatform();
                     FinishedGoing?.Invoke(true);
-
-                    yield break;
-                }
-
-                if (_currentIndexPlatform >= _spawnerPlatform.MaxIndexPlatforms)
-                {
-                    IsFinished = true;
-
-                    FinishedGame?.Invoke(_nameText.text, _counterThrows, _counterBonus, _counterPenalty);
 
                     yield break;
                 }
@@ -128,6 +128,15 @@ namespace Players
                 yield return new WaitForSeconds(DelayWalk);
 
                 _animator.SetBool(IsJumpAnimation, false);
+
+                if (_currentIndexPlatform >= _spawnerPlatform.MaxIndexPlatforms)
+                {
+                    IsFinished = true;
+
+                    FinishedGame?.Invoke(_nameText.text, _counterThrows, _counterBonus, _counterPenalty);
+
+                    yield break;
+                }
 
                 yield return null;
             }

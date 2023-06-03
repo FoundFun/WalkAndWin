@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Views;
 using TMPro;
-using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
+    [SerializeField] private CameraMover _cameraMover;
     [SerializeField] private StartView _startView;
     [SerializeField] private GameView _gameView;
     [SerializeField] private GameOverView _gameOverView;
@@ -35,7 +36,7 @@ public class Game : MonoBehaviour
         _startView.StartButtonClick += OnStartGame;
         _startView.CreateNameButtonClick += OnCreateName;
         _gameView.NextPlayerButtonClick += OnChangePlayer;
-        _gameView.ExitGameButtonClick += OnFinishGame;
+        _gameView.ExitGameButtonClick += OnExitMenuButtonClick;
         _gameOverView.ExitMenuButtonClick += OnExitMenuButtonClick;
         _spawnerPlayer.FinishedPlayer += OnFinishedPlayer;
         _spawnerPlayer.ChangedPlayer += _gameView.EnableButtonNextPlayer;
@@ -48,7 +49,7 @@ public class Game : MonoBehaviour
         _startView.StartButtonClick -= OnStartGame;
         _startView.CreateNameButtonClick -= OnCreateName;
         _gameView.NextPlayerButtonClick -= OnChangePlayer;
-        _gameView.ExitGameButtonClick -= OnFinishGame;
+        _gameView.ExitGameButtonClick -= OnExitMenuButtonClick;
         _gameOverView.ExitMenuButtonClick -= OnExitMenuButtonClick;
         _spawnerPlayer.FinishedPlayer -= OnFinishedPlayer;
         _spawnerPlayer.ChangedPlayer -= _gameView.EnableButtonNextPlayer;
@@ -57,6 +58,7 @@ public class Game : MonoBehaviour
     private void Start()
     {
         Reset();
+        _cameraMover.OnTwist();
     }
 
     private void Reset()
@@ -72,6 +74,7 @@ public class Game : MonoBehaviour
         _gameView.DisableButtonNextPlayer();
         _startView.OpenScreen();
         _startView.EnableButtonCreatePlayer();
+
         _dice.Reset();
         _dice.gameObject.SetActive(false);
         _spawnerPlayer.Reset();
@@ -100,18 +103,12 @@ public class Game : MonoBehaviour
 
         if (_numberWinners >= _currentNumberPlayers)
         {
-            OnFinishGame();
+            _gameOverView.OpenScreen();
 
             return;
         }
 
         _gameView.EnableButtonNextPlayer();
-    }
-
-    private void OnFinishGame()
-    {
-        _gameView.CloseScreen();
-        _gameOverView.OpenScreen();
     }
 
     private void OnCreatePlayer()

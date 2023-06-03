@@ -3,15 +3,17 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
 public class Dice : MonoBehaviour
 {
-    private const int MinTorque = 200;
-    private const int MaxTorque = 501;
+    private const int MinTorque = 100;
+    private const int MaxTorque = 1001;
     private const float ResetTime = 10;
 
     private DiceSide[] _sides;
     private ControlsInput _input;
     private Rigidbody _rigidbody;
+    private AudioSource _audioSource;
     private Coroutine _coroutine;
     private Vector3 _startPosition;
     private int _diceValue;
@@ -42,9 +44,16 @@ public class Dice : MonoBehaviour
 
     private void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         _rigidbody = GetComponent<Rigidbody>();
         _startPosition = transform.position;
         _rigidbody.useGravity = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Table table))
+            _audioSource.Play();
     }
 
     public void Reset()
