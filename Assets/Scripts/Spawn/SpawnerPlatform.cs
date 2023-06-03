@@ -10,13 +10,13 @@ public class SpawnerPlatform : ObjectPool<Platform>
     [SerializeField] private Game _game;
 
     private Vector3 _maxScalePlatform = new Vector3(25, 25, 25);
-    private Vector3 _startScalePlatform = new Vector3(14,14,14);
+    private Vector3 _startScalePlatform = new Vector3(14, 14, 14);
 
     private Point[] _spawnPoints;
     private List<Platform> _pool;
     private Coroutine _coroutine;
 
-    public int MaxIndexPlatforms => _pool.Count;
+    public int MaxIndexPlatforms => _pool.Count - 1;
 
     private void Awake()
     {

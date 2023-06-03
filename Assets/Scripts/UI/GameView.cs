@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,9 +9,17 @@ namespace Views
     {
         [SerializeField] private Button _exitGameButton;
         [SerializeField] private Button _nextPlayerButton;
+        [SerializeField] private AudioSource _gameAudio;
+
+        private Coroutine _coroutine;
 
         public event UnityAction ExitGameButtonClick;
         public event UnityAction NextPlayerButtonClick;
+
+        private void Awake()
+        {
+            _gameAudio.volume = 0;
+        }
 
         private void OnEnable()
         {
@@ -48,11 +57,21 @@ namespace Views
 
         protected override void Open()
         {
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+
+            _coroutine = StartCoroutine(PlayMusic());
+
             base.Open();
         }
 
         protected override void Close()
         {
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+
+            _coroutine = StartCoroutine(StopMusic());
+
             base.Close();
         }
 
@@ -64,6 +83,42 @@ namespace Views
         private void OnNextPlayerButtonClick()
         {
             NextPlayerButtonClick?.Invoke();
+        }
+
+        private IEnumerator PlayMusic()
+        {
+            float elapsed = 0;
+            float targetValue = 0.1f;
+            float lerpDuration = 1000;
+
+            _gameAudio.Play();
+
+            while (_gameAudio.volume != targetValue)
+            {
+                _gameAudio.volume = Mathf.Lerp(_gameAudio.volume, targetValue,
+                    elapsed / lerpDuration);
+                elapsed += Time.deltaTime;
+
+                yield return null;
+            }
+        }
+
+        private IEnumerator StopMusic()
+        {
+            float elapsed = 0;
+            float targetValue = 0;
+            float lerpDuration = 500;
+
+            while (_gameAudio.volume != targetValue)
+            {
+                _gameAudio.volume = Mathf.Lerp(_gameAudio.volume, targetValue,
+                    elapsed / lerpDuration);
+                elapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            _gameAudio.Stop();
         }
     }
 }

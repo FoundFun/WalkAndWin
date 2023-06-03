@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Views
 {
@@ -10,14 +8,14 @@ namespace Views
 
         protected virtual void Open()
         {
-            CanvasGroup.LeanAlpha(1, 1).setIgnoreTimeScale(true);
+            CanvasGroup.LeanAlpha(1, 1);
             CanvasGroup.interactable = true;
             CanvasGroup.blocksRaycasts = true;
         }
 
         protected virtual void Close()
         {
-            CanvasGroup.LeanAlpha(0, 1).setIgnoreTimeScale(true);
+            CanvasGroup.LeanAlpha(0, 1);
             CanvasGroup.interactable = false;
             CanvasGroup.blocksRaycasts = false;
         }
