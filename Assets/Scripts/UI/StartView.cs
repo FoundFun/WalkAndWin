@@ -9,11 +9,14 @@ namespace Views
     public class StartView : View
     {
         [SerializeField] private Button _startButton;
-        [SerializeField] private Button _createPlayerButton;
+        [SerializeField] private Button _addPlayerButton;
         [SerializeField] private AudioSource _menuAudio;
         [SerializeField] private TMP_Text _previewText;
 
         private Coroutine _coroutine;
+        private Vector3 _startButtonPosition;
+        private Vector3 _startPreviewPosition;
+        private Vector3 _startAddButtonPosition;
 
         public event UnityAction StartButtonClick;
         public event UnityAction CreateNameButtonClick;
@@ -21,18 +24,21 @@ namespace Views
         private void Awake()
         {
             _menuAudio.volume = 0;
+            _startButtonPosition = _startButton.transform.position;
+            _startPreviewPosition = _previewText.transform.position;
+            _startAddButtonPosition = _addPlayerButton.transform.position;
         }
 
         private void OnEnable()
         {
             _startButton.onClick.AddListener(OnStartButtonClick);
-            _createPlayerButton.onClick.AddListener(OnCreatePlayer);
+            _addPlayerButton.onClick.AddListener(OnCreatePlayer);
         }
 
         private void OnDisable()
         {
             _startButton.onClick.RemoveListener(OnStartButtonClick);
-            _createPlayerButton.onClick.RemoveListener(OnCreatePlayer);
+            _addPlayerButton.onClick.RemoveListener(OnCreatePlayer);
         }
 
         public void OpenScreen()
@@ -47,43 +53,24 @@ namespace Views
 
         public void EnableButtonCreatePlayer()
         {
-            _createPlayerButton.gameObject.SetActive(true);
-            _createPlayerButton.interactable = true;
+            _addPlayerButton.gameObject.SetActive(true);
+            _addPlayerButton.interactable = true;
         }
 
         public void DisableButtonCreatePlayer()
         {
-            _createPlayerButton.gameObject.SetActive(false);
-            _createPlayerButton.interactable = false;
+            _addPlayerButton.gameObject.SetActive(false);
+            _addPlayerButton.interactable = false;
         }
 
         protected override void Open()
         {
-            float heightRange = 300;
-            float buttonPositionY = 370;
-            float previewPositionY = 370;
-
             base.Open();
 
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
 
             _coroutine = StartCoroutine(PlayMusic());
-
-            _previewText.gameObject.transform.position =
-                new Vector2(_previewText.transform.position.x, Screen.height + heightRange);
-            _startButton.gameObject.transform.position =
-                new Vector2(_startButton.transform.position.x, -Screen.height);
-            _createPlayerButton.gameObject.transform.position
-                = new Vector2(_createPlayerButton.transform.position.x, -Screen.height);
-
-            _previewText.gameObject.LeanScale(Vector3.one, 0.7f);
-            _previewText.gameObject.LeanMoveLocalY(previewPositionY, 1.2f)
-                .setEaseInOutExpo().setEaseInOutBack();
-            _startButton.gameObject.LeanMoveLocalY(-buttonPositionY, 2)
-                .setEaseInOutExpo().setEaseInOutBack();
-            _createPlayerButton.gameObject.LeanMoveLocalY(-buttonPositionY, 2.4f)
-                .setEaseInOutExpo().setEaseInOutBack();
         }
 
         protected override void Close()
@@ -94,14 +81,6 @@ namespace Views
                 StopCoroutine(_coroutine);
 
             _coroutine = StartCoroutine(StopMusic());
-
-            _previewText.gameObject.LeanScale(Vector3.zero, 0.2f);
-            _previewText.gameObject.LeanMoveLocalY(Screen.height, 0.15f)
-                .setEaseInOutBack();
-            _startButton.gameObject.LeanMoveLocalY(-Screen.height, 0.15f)
-                .setEaseInOutBack();
-            _createPlayerButton.gameObject.LeanMoveLocalY(-Screen.height, 0.15f)
-                .setEaseInOutBack();
         }
 
         private void OnStartButtonClick()

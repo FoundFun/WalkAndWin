@@ -9,14 +9,14 @@ public class SpawnerPlatform : ObjectPool<Platform>
     [SerializeField] private PointContainer _pointContainer;
     [SerializeField] private Game _game;
 
-    private Vector3 _maxScalePlatform = new Vector3(25, 25, 25);
-    private Vector3 _startScalePlatform = new Vector3(14, 14, 14);
+    private Vector3 _maxScale = new Vector3(17, 17, 17);
+    private Vector3 _minScale = new Vector3(14, 14, 14);
 
     private Point[] _spawnPoints;
     private List<Platform> _pool;
     private Coroutine _coroutine;
 
-    public int MaxIndexPlatforms => _pool.Count - 1;
+    public int MaxIndex => _pool.Count - 1;
 
     private void Awake()
     {
@@ -61,6 +61,7 @@ public class SpawnerPlatform : ObjectPool<Platform>
 
     private IEnumerator Spawn()
     {
+        Vector3 maxScaleAnimation = new Vector3(25, 25, 25);
         float zoomSpeed = 0.2f;
         float delay = 0.1f;
 
@@ -71,11 +72,14 @@ public class SpawnerPlatform : ObjectPool<Platform>
                 platform.transform.position = _spawnPoints[i].transform.position;
                 platform.gameObject.SetActive(true);
                 platform.SetScore(i);
-                platform.gameObject.LeanScale(_maxScalePlatform, zoomSpeed);
+                platform.gameObject.LeanScale(maxScaleAnimation, zoomSpeed);
 
                 yield return new WaitForSeconds(delay);
 
-                platform.gameObject.LeanScale(_startScalePlatform, zoomSpeed);
+                platform.gameObject.LeanScale(new Vector3(
+                    Random.Range(_minScale.x, _maxScale.x),
+                    Random.Range(_minScale.y, _maxScale.y),
+                    Random.Range(_minScale.z, _maxScale.z)), zoomSpeed);
 
                 yield return new WaitForSeconds(delay);
             }

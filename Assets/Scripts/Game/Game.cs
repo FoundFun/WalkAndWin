@@ -6,7 +6,6 @@ using TMPro;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private CameraMover _cameraMover;
     [SerializeField] private StartView _startView;
     [SerializeField] private GameView _gameView;
     [SerializeField] private GameOverView _gameOverView;
@@ -17,6 +16,7 @@ public class Game : MonoBehaviour
     [SerializeField] private GameStatistic _gameStatistic;
     [SerializeField] private TMP_InputField _inputUserText;
     [SerializeField] private Button _createPlayerButton;
+    [SerializeField] private Yandex _yandex;
 
     private const int MinNumberPlayers = 1;
     private const int NumberPenalty = -3;
@@ -28,6 +28,11 @@ public class Game : MonoBehaviour
     private int _numberWinners;
     private string _playerName;
     private bool _isCreatePlayer;
+
+    private void Awake()
+    {
+        _yandex.OnShowAds();
+    }
 
     private void OnEnable()
     {
@@ -58,7 +63,6 @@ public class Game : MonoBehaviour
     private void Start()
     {
         Reset();
-        _cameraMover.OnTwist();
     }
 
     private void Reset()
@@ -104,6 +108,8 @@ public class Game : MonoBehaviour
         if (_numberWinners >= _currentNumberPlayers)
         {
             _gameOverView.OpenScreen();
+
+            _yandex.OnShowAds();
 
             return;
         }
