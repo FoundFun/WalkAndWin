@@ -57,22 +57,22 @@ namespace Views
 
         protected override void Open()
         {
+            base.Open();
+
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
 
             _coroutine = StartCoroutine(PlayMusic());
-
-            base.Open();
         }
 
         protected override void Close()
         {
+            base.Close();
+
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
 
             _coroutine = StartCoroutine(StopMusic());
-
-            base.Close();
         }
 
         protected void OnExitGameButtonClick()
@@ -88,7 +88,7 @@ namespace Views
         private IEnumerator PlayMusic()
         {
             float elapsed = 0;
-            float targetValue = 0.1f;
+            float targetValue = 0.2f;
             float lerpDuration = 1000;
 
             _gameAudio.Play();

@@ -29,14 +29,15 @@ public class GameStatistic : MonoBehaviour
 
     public void Reset()
     {
-        foreach (var name in _names)
-            name.text = Empty;
-        foreach (var value in _throws)
-            value.text = Empty;
-        foreach (var bonus in _bonuses)
-            bonus.text = Empty;
-        foreach (var penalty in _penalties)
-            penalty.text = Empty;
+        for (int i = 1; i < _names.Length; i++)
+        {
+            _names[i].text = Empty;
+            _throws[i].text = Empty;
+            _bonuses[i].text = Empty;
+            _penalties[i].text = Empty;
+        }
+
+        _counter = 1;
     }
 
     public void Set(string name, int throws, int bonus, int penalty)

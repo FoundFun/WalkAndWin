@@ -87,7 +87,7 @@ namespace Players
 
             _counterThrows++;
 
-            if (numberStep < 0 && _currentIndexPlatform != _spawnerPlatform.MaxIndexPlatforms)
+            if (numberStep < 0 && _currentIndexPlatform != _spawnerPlatform.MaxIndex)
             {
                 index = numberStep;
                 polarity--;
@@ -129,7 +129,7 @@ namespace Players
 
                 _animator.SetBool(IsJumpAnimation, false);
 
-                if (_currentIndexPlatform >= _spawnerPlatform.MaxIndexPlatforms)
+                if (_currentIndexPlatform >= _spawnerPlatform.MaxIndex)
                 {
                     IsFinished = true;
 

@@ -105,7 +105,7 @@ public class SpawnerPlayer : ObjectPool<Player>
         IsFinishedGoing = state;
 
         if (_pool[_currentPlayer].CurrentIndexPlatform
-            < _spawnerPlatform.MaxIndexPlatforms
+            < _spawnerPlatform.MaxIndex
             && _pool[_currentPlayer].CurrentIndexPlatform > 0)
         {
             Platform platform = _spawnerPlatform.GetPlatform(

@@ -8,7 +8,7 @@ public class CameraMover : MonoBehaviour
 
     private Coroutine _corouitne;
 
-    public void OnTwist()
+    private void Start()
     {
         if (_corouitne != null)
             StopCoroutine(_corouitne);
